@@ -11,6 +11,11 @@ var programState = 0;
 var predictedClassLabels = nj.zeros(2);
 var oneFrameOfData = nj.zeros([5,4,6]);
 const knnClassifier = ml5.KNNClassifier();
+var firstDigit=1;
+var secondDigit=2;
+var digitToShow = secondDigit;
+
+
 
 function Train(){
     trainingCompleted = true;
@@ -257,7 +262,25 @@ function HandleState1(frame) {
 }
 function HandleState2(frame) {
     Handleframe(frame);
+    DrawLowerRightPanel();
+    DetermineWhetherToSwitchDigits();
+    
     //test
+}
+function DrawLowerRightPanel(){
+    if(digitToShow==secondDigit){
+       
+         image(ASL2,window.innerWidth/2,window.innerHeight/2,window.innerWidth/2,window.innerHeight/2);
+    }
+    else{
+         image(ASL1,window.innerWidth/2,window.innerHeight/2,window.innerWidth/2,window.innerHeight/2);
+    }
+}
+function DetermineWhetherToSwitchDigits(){
+    if (digitToShow==secondDigit){ 
+        digiToShow=firstDigit;
+    }
+    digitToShow = secondDigit;
 }
 function TrainKNNIfNotDoneYet() {
     if(trainingCompleted == false){
