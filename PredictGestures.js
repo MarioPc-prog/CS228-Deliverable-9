@@ -11,9 +11,9 @@ var programState = 0;
 var predictedClassLabels = nj.zeros(2);
 var oneFrameOfData = nj.zeros([5,4,6]);
 const knnClassifier = ml5.KNNClassifier();
-var firstDigit=1;
-var secondDigit=2;
-var digitToShow = secondDigit;
+var digitToShow = 1;
+var numPredictions = 0;
+var timeSinceLastDigitChange = new Date();
 
 
 
@@ -268,19 +268,35 @@ function HandleState2(frame) {
     //test
 }
 function DrawLowerRightPanel(){
-    if(digitToShow==secondDigit){
-       
-         image(ASL2,window.innerWidth/2,window.innerHeight/2,window.innerWidth/2,window.innerHeight/2);
+    if(digitToShow== 1){
+       image(ASL1,window.innerWidth/2,window.innerHeight/2,window.innerWidth/2,window.innerHeight/2);
     }
     else{
-         image(ASL1,window.innerWidth/2,window.innerHeight/2,window.innerWidth/2,window.innerHeight/2);
+         image(ASL2,window.innerWidth/2,window.innerHeight/2,window.innerWidth/2,window.innerHeight/2);
     }
 }
-function DetermineWhetherToSwitchDigits(){
-    if (digitToShow==secondDigit){ 
-        digiToShow=firstDigit;
+function DetermineWhetherToSwitchDigits() {
+	if(TimeToSwitchDigits()){
+		SwitchDigits();
+	}
+}
+function SwitchDigits() {
+    if (digitToShow === 1) {
+        digitToShow = 2;
+    } else {
+        digitToShow = 1;
     }
-    digitToShow = secondDigit;
+}
+function TimeToSwitchDigits() {
+    let currentTime = new Date();
+    let timeInBetweenInMilliseconds = currentTime - timeSinceLastDigitChange;
+    let timeInBetweenInSeconds = timeInBetweenInMilliseconds / 1000;
+    if (timeInBetweenInSeconds >= 1) {
+        timeSinceLastDigitChange = new Date();
+        return true;
+    } else {
+        return false;
+    }
 }
 function TrainKNNIfNotDoneYet() {
     if(trainingCompleted == false){
